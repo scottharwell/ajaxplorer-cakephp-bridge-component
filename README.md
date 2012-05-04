@@ -3,14 +3,23 @@ AjaxPlorer / CakePHP Bridge
 
 A CakePHP component to assist with AjaxPlorer communications. This repo can be included as a CakePHP plugin or you can copy the component file directly to your application's `Controller/Component` directory.
 
+Requirements
+------------
+* CakePHP 2.0+
+* AjaxPlorer 4.0+ installed in `webroot/ajaxplorer` directory.
+	* This component relies on AjaxPlorers `auth.remote` plugin to be in its default location. If you need to change the path then use `$this->Ajaxplorer->glueCode = '/path/to/glueCode.php';` to set the proper path before using any functions.
+
 Instructions
 ------------
 
 * Properly included the component in your CakePHP app and reference it in your controller's `components` array.
-* Set the `$glueCode` variable to match your AjaxPlorer installation.
-	* By default, this component looks for `webroot/ajaxplorer/plugins/auth.remote/glueCode.php`
-* Update this component's variables to match the authentication scheme within your application. The component currently expects a user object to `haveOne` role that it can use to determine and administrator.
-* Once the functions can operate with your user objects, then use the component to pass a command to AjaxPlorer. Most common uses would be login and logout. For instance, the login function in your `UsersController.php` file would look something like:
+* Update this component's variables to match the authentication scheme within your application. The component currently expects a user object to `haveOne` role that it can use to determine and administrator. The current implementation of this component relies on a `User` object with the following variables. If you require other settings, which is probably likely, then change the code in the switch statement to match your `User` data coming from CakePHP.
+	* `username`
+	* `password`
+	* `role_id`
+* If AjaxPlorer plugins are not installed in the standard paths, then set the path the `glueCode.php` before calling any functions.
+	* `$this->Ajaxplorer->glueCode = '/path/to/glueCode.php';`
+* Once you have properly setup the integration between your CakePHP `User` object and the AjaxPlorer user process, you can then call AjaxPlorer functions like `login` with this component as illustrated below.
 
         public function login() {
     		$this->set("title_for_layout", "Login");
